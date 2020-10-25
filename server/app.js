@@ -38,10 +38,10 @@ let redisURL = {
 let redisPASS = 'MgtbrZjKkPoiOdl0TLRDrnoZZ5uqwNNY';
 if (process.env.REDISCLOUD_URL) {
   redisURL = url.parse(process.env.REDISCLOUD_URL);
-  [, redisPass] = redisURL.auth.split(':');
+  [, redisPASS] = redisURL.auth.split(':');
 }
 
-let redisClient = redis.createClient({
+const redisClient = redis.createClient({
   host: redisURL.hostname,
   port: redisURL.port,
   password: redisPASS,
@@ -76,8 +76,8 @@ app.set('views', `${__dirname}/../views`);
 app.use(cookieParser());
 app.use(csrf());
 app.use((err, req, res, next) => {
-  if(err.code !== 'EBADCSRFTOKEN') return next(err);
-  
+  if (err.code !== 'EBADCSRFTOKEN') return next(err);
+
   console.log('Missing CSRF token');
   return false;
 });
